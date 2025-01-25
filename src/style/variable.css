@@ -1,0 +1,76 @@
+:root {
+    --player-one: #ff6487;
+    --player-two: #ffce69;
+
+    --width-header: 42vw;
+    --height-header: 6vh;
+
+    --width-main-content: 72vw;
+
+    --width-player-board: 10vw;
+    --height-player-board: 18vh;
+
+    --width-game-board: 44vw;
+    --height-game-board: 60vh;
+
+    --height-footer: 26vh;
+
+    --height-pointer-row: 5vh;
+
+    --width-rules: 40vw;
+
+    --height-face: calc(var(--height-player-board) / 3 + 3px);
+    --width-face: calc(var(--width-player-board) / 3 + 3px);
+
+    --height-timer: calc(100vh - (var(--height-header) + var(--height-game-board) + var(--height-pointer-row) + 10vh));
+}
+
+@media (max-width:1024px) {
+    :root {
+
+        --height-header: 3vh;
+        --width-header: 55vw;
+
+        --width-main-content: 85vw;
+        --height-pointer-row: 4vh;
+
+        --height-game-board: 70vh;
+        --width-game-board: 55vw;
+
+        --width-player-board: 12vw;
+        --height-player-board: 15vh;
+
+        --height-face: calc(var(--height-player-board) / 3);
+        --width-face: calc(var(--width-player-board) / 3);
+    }
+}
+
+@media (max-width:768px) {
+    :root {
+        --width-header: 80vw;
+        --height-header: 5vh;
+
+        --width-main-content: 80vw;
+
+        --width-game-board: 80vw;
+        --height-game-board: 52vh;
+
+        --width-player-board: 12vw;
+        --height-player-board: 10vh;
+
+        --height-footer: 23vh;
+
+        --height-timer: calc(100vh - (var(--height-header) + var(--height-game-board) + var(--height-pointer-row) + var(--height-player-board) + 13vh));
+
+        --height-face: calc(var(--height-player-board) / 2);
+        --width-face: calc(var(--width-player-board) / 2);
+    }
+}
+
+@media (max-width:488px) {
+    :root {
+        --height-game-board: 55vh;
+        --height-timer: calc(100vh - (var(--height-header) + var(--height-game-board) + var(--height-pointer-row) + var(--height-player-board) + 15vh));
+        --width-rules: 90vw;
+    }
+}

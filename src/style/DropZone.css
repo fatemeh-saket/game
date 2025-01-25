@@ -1,0 +1,107 @@
+@import './variable.css';
+
+:root {
+    --size: calc(calc(calc((var(--height-game-board) * 90) / 100) / 6) - 12px)
+}
+
+.drap-zone {
+    width: var(--width-game-board);
+    height: 100%;
+    margin: auto;
+    position: relative;
+}
+
+.p2 {
+    background-color: var(--player-two);
+}
+
+.p1 {
+    background-color: var(--player-one);
+}
+.winner{
+    text-align: center;
+    font-size: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ************************* Coin  *********************** */
+.coin {
+    width: 12%;
+    height: 100%;
+    border-radius: 50%;
+    position: absolute;
+    bottom: 0;
+    transition: all 500ms ease-in-out;
+    z-index: 4;
+}
+
+
+/* ************************* dropped Coin  *********************** */
+.droppedCoin {
+    width: 12.2%;
+    height: calc(calc(calc((var(--height-game-board) * 90) / 100) / 6) - 12px);
+    border-radius: 50%;
+    position: absolute;
+    bottom: 0;
+    /* bottom: calc(calc(1vh + var(--size) + 10px) * -1); */
+    right: 10px;
+    z-index: 3;
+    transition: all 500ms linear;
+}
+
+.droppedCoin-column-0 {
+    right: calc(calc(calc(var(--width-game-board) / 7) * 0) + 9px);
+}
+
+.droppedCoin-column-1 {
+    right: calc(calc(calc(var(--width-game-board) / 7) * 1) + 8px);
+}
+
+.droppedCoin-column-2 {
+    right: calc(calc(calc(var(--width-game-board) / 7) * 2) + 7px);
+}
+
+.droppedCoin-column-3 {
+    right: calc(calc(calc(var(--width-game-board) / 7) * 3) + 6px);
+}
+
+.droppedCoin-column-4 {
+    right: calc(calc(calc(var(--width-game-board) / 7) * 4) + 5px);
+}
+
+.droppedCoin-column-5 {
+    right: calc(calc(calc(var(--width-game-board) / 7) * 5) + 4px);
+}
+
+.droppedCoin-column-6 {
+    right: calc(calc(calc(var(--width-game-board) / 7) * 6) + 3px);
+}
+
+
+
+.droppedCoin-row-0 {
+    bottom: calc(calc(1vh + var(--size) + 10px) * -1);
+}
+
+.droppedCoin-row-1 {
+    bottom: calc(calc(1vh + 2 * var(--size) + 20px) * -1);
+}
+
+.droppedCoin-row-2 {
+    bottom: calc(calc(1vh + 3 * var(--size) + 30px) * -1);
+}
+
+.droppedCoin-row-3 {
+    bottom: calc(calc(1vh + 4 * var(--size) + 42px) * -1);
+}
+
+.droppedCoin-row-4 {
+    bottom: calc(calc(1vh + 5 * var(--size) + 53px) * -1);
+}
+
+.droppedCoin-row-5 {
+    bottom: calc(calc(1vh + 6 * var(--size) + 63px) * -1);
+
+}

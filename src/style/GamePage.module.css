@@ -1,0 +1,156 @@
+@import './variable.css';
+
+.main {
+    height: 100vh;
+    background-color: #7a45ff;
+}
+
+/********* header *******/
+.header {
+    display: flex;
+    justify-content: space-between;
+    width: var(--width-header);
+    margin: auto;
+    height: var(--height-header);
+    padding-top: 6vh;
+    margin-bottom: 4vh;
+}
+
+img {
+    width: 3.5vw;
+}
+
+.header .button {
+    background-color: #5c2dd3;
+    border: none;
+    padding: .4rem .8rem;
+    border-radius: 10px;
+    font-weight: 400;
+    font-size: 0.8rem;
+    color: #fff;
+    font-family: 'IRANYekan';
+}
+
+/********* content *******/
+.main-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    width: var(--width-main-content);
+    margin: auto;
+}
+
+.pointer-row {
+    height: calc(calc(calc((var(--height-game-board) * 90) / 100) / 6) - 12px);
+    width: 100%;
+    margin-bottom: 1vh;
+}
+
+.game-bord {
+    width: var(--width-game-board);
+    height: var(--height-game-board);
+    border: 1px solid #333;
+    border-radius: 30px;
+    background-color: #fff;
+    box-shadow: 0px 10px 3px;
+    order: 2;
+    z-index: 2;
+}
+
+.resultBoard {
+    position: relative;
+    width: var(--width-player-board);
+    height: var(--height-player-board);
+    border: 1px solid #333;
+    border-radius: 30px;
+    background-color: #fff;
+    box-shadow: 0px 10px 3px;
+    order: 1;
+    text-align: center;
+    font-family: 'IRANYekan';
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.resultBoard:nth-child(2) {
+    order: 3;
+}
+
+.figure {
+    position: absolute;
+    top: calc(calc(var(--height-face) * -1) / 2);
+    left: calc(var(--width-player-board) / 3);
+    margin: 0;
+}
+
+.resultBoard address {
+    margin-top: 1.5rem;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.resultBoard span {
+    font-weight: 800;
+    font-size: 2rem;
+}
+
+/********* footer *******/
+.footer {
+    width: 100%;
+    height: var(--height-footer);
+    position: absolute;
+    bottom: 1px;
+    border-radius: 25% 20% 0 0;
+}
+
+.mainFooter{
+    background-color: #5c2cd5;
+}
+.p1Footer{
+    background-color: var(--player-one);
+}
+.p2Footer{
+    background-color: var(--player-two);
+}
+
+@media (max-width:768px) {
+    .game-bord {
+        /* width: 100%; */
+        order: 3;
+    }
+
+    .resultBoard {
+        width: 45%;
+        height: 10vh;
+        display: inline-block;
+    }
+
+    .resultBoard:nth-child(2) {
+        order: 1;
+    }
+
+    .pointer-row {
+        order: 2;
+        margin-top: 2vh;
+    }
+
+    .figure {
+        position: absolute;
+        top: calc(var(--height-player-board) / 4);
+    }
+
+    .playerOne {
+        left: calc(calc(var(--width-face) * -1) / 2)
+    }
+
+    .playerTwo {
+        right: calc(calc(var(--width-face) * -1) / 2)
+    }
+}
+
+@media (max-width:1024px) {}
+
+

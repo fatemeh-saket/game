@@ -1,0 +1,84 @@
+@import './variable.css';
+
+.main {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(0deg, rgba(24, 14, 51, 1) 0%, rgba(77, 44, 162, 1) 0%, rgba(122, 69, 255, 1) 81%);
+}
+
+.wrapper {
+    position: relative;
+    box-sizing: border-box;
+    width: 40vw;
+    margin: auto;
+    background-color: #fff;
+    border: 2px solid #333;
+    box-shadow: 0px 10px 3px;
+    border-radius: 40px;
+    padding: 0px 30px;
+}
+
+.wrapper h2 {
+    text-align: center;
+    font-weight: 800;
+    font-size: 2rem;
+}
+
+.description h5,
+.rules h5 {
+    color: #5830b8;
+    font-size: 1.2rem;
+    margin: 0;
+
+}
+
+.rules {
+    margin-bottom: 8vh;
+}
+
+.description p,
+.rules ul {
+    font-size: 0.8rem;
+    margin: 0.3rem;
+}
+
+li {
+    list-style: none;
+}
+
+ul {
+    padding: 0;
+}
+
+.agreement {
+    width: 6vw;
+    height: 10vh;
+    border-radius: 50%;
+    border: 2px solid #000;
+    box-shadow: 0px 10px 3px;
+    background-color: #f86786;
+    position: absolute;
+    bottom: -5vh;     /* نصف ارتفاع */
+    right: 17vw;     /* مصف عرض صفحه و ار نصف عرض المنت کم میشود */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.agreement img {
+    width: 3vw;
+}
+
+@media (max-width:488px) {
+    .wrapper {
+        width: 90vw;
+    }
+
+    .agreement {
+        /* نصف عرض صفحه و ار نصف عرض خود المنت کم میشود */
+        right: 39vw;
+    }
+}

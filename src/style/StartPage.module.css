@@ -1,0 +1,92 @@
+@import './variable.css';
+
+.main {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* background-color: #5c2cd5; */
+    background: linear-gradient(0deg, rgba(24, 14, 51, 1) 0%, rgba(77, 44, 162, 1) 0%, rgba(122, 69, 255, 1) 81%);
+}
+
+.list {
+    box-sizing: border-box;
+    height: 60vh;
+    width: 25vw;
+    margin: auto;
+    background-color: #7a45ff;
+    border: 1px solid #333;
+    box-shadow: 0px 10px 3px;
+    border-radius: 40px;
+    padding: 0px 23px 20px;
+}
+
+.logo {
+    box-sizing: border-box;
+    text-align: center;
+    padding-top: 7vh;
+    height: 35%;
+}
+
+.listBottom {
+    display: flex;
+    height: 60%;
+    flex-direction: column;
+    justify-content: space-around;
+    box-sizing: border-box;
+}
+
+.logo img {
+    width: 4vw;
+
+}
+
+.row {
+    border: 2px solid #333;
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 0px 10px 3px;
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.playCpu {
+    background-color: var(--player-one);
+}
+
+.twolayer {
+    background-color: var(--player-two);
+}
+
+.rule {
+    background-color: #fff;
+}
+
+.playCpu img {
+    width: 1.5vw;
+}
+
+.twolayer img {
+    width: 1.6vw;
+}
+
+.playCpu p,
+.twolayer p {
+    margin: 0;
+}
+
+@media (max-width:768px) {
+    .list {
+        height: 50vh;
+        width: 50vw;
+    }
+
+    .listBottom {
+        height: 60%;
+    }
+    .logo {
+        height: 30%;
+    }
+}
