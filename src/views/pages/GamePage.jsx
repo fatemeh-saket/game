@@ -10,16 +10,17 @@ import { useDispatch, useSelector } from 'react-redux'
 import { resetGame } from '../../utility/Utils'
 import { useState } from 'react'
 import PauseModal from '../ui-elements/Modal'
-
+import { useParams } from 'react-router-dom'
 
 function GamePage() {
     const winner = useSelector(state => state.data.winner)
     const scorePlayerTwo = useSelector(state => state.data.scorePlayerTwo)
     const scorePlayerOne = useSelector(state => state.data.scorePlayerOne)
     const [pause, setPause] = useState(false)
-    const dispach = useDispatch()
-
     const [openModal, setOpenModal] = useState(false);
+
+    const dispach = useDispatch()
+    const params = useParams()
 
     const onOpenModal = () => setOpenModal(true);
     const onCloseModal = () => setOpenModal(false);
@@ -37,8 +38,8 @@ function GamePage() {
                         onClick={() => {
                             setPause(!pause)
                             onOpenModal()
-                        }}
-                    > فهرست </button></div>
+                        }}> فهرست </button>
+                </div>
             </section>
             <section className={style[`main-content`]}>
                 <div className={style[`pointer-row`]}>
@@ -50,7 +51,7 @@ function GamePage() {
                         {scorePlayerTwo - scorePlayerOne >= 0 && <HappyFace player="two" />}
                         {scorePlayerTwo - scorePlayerOne <= -2 && <FearFace player="two" />}
                     </div>
-                    <address>بازیکن 2</address>
+                    <address>بازیکن 2    </address>
                     <span>{scorePlayerTwo}</span>
                 </div>
                 <div className={style.resultBoard}>
@@ -59,7 +60,9 @@ function GamePage() {
                         {scorePlayerOne - scorePlayerTwo >= 0 && <HappyFace player="one" />}
                         {scorePlayerOne - scorePlayerTwo <= -2 && <FearFace player="one" />}
                     </div>
-                    <address> بازیکن1 </address>
+                    <address> 
+                        {params.players === "twoPlayers"? "  بازیکن1 ":" سیستم " }
+                        </address>
                     <span>{scorePlayerOne}</span>
                 </div>
                 <div className={style[`game-bord`]}>
@@ -68,8 +71,8 @@ function GamePage() {
             </section>
             <div className={`${style.footer} ${winner === 0 && style.mainFooter} ${winner === 2 && style.p2Footer} ${winner === 1 && style.p1Footer}`}></div>
             <Cursor />
-         <PauseModal openModal={openModal} onCloseModal={onCloseModal} setPause={setPause} pause={pause}/>
-        
+            <PauseModal openModal={openModal} onCloseModal={onCloseModal} setPause={setPause} pause={pause} />
+
         </div>
     )
 }

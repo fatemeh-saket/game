@@ -18,25 +18,14 @@
 .p1 {
     background-color: var(--player-one);
 }
-.winner{
+
+.winner {
     text-align: center;
     font-size: 2rem;
     display: flex;
     justify-content: center;
     align-items: center;
 }
-
-/* ************************* Coin  *********************** */
-.coin {
-    width: 12%;
-    height: 100%;
-    border-radius: 50%;
-    position: absolute;
-    bottom: 0;
-    transition: all 500ms ease-in-out;
-    z-index: 4;
-}
-
 
 /* ************************* dropped Coin  *********************** */
 .droppedCoin {
@@ -45,7 +34,6 @@
     border-radius: 50%;
     position: absolute;
     bottom: 0;
-    /* bottom: calc(calc(1vh + var(--size) + 10px) * -1); */
     right: 10px;
     z-index: 3;
     transition: all 500ms linear;
@@ -103,5 +91,8 @@
 
 .droppedCoin-row-5 {
     bottom: calc(calc(1vh + 6 * var(--size) + 63px) * -1);
+}
 
+.droppedCoin-column-- {
+    transition: none;
 }

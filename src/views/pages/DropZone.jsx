@@ -1,8 +1,7 @@
-import { useEffect, useState } from 'react'
+import {  useState } from 'react'
 import '../../style/DropZone.css'
 import ActiveCoin from './ActiveCoin'
-import { useDispatch, useSelector } from 'react-redux'
-import { wins } from '../../utility/Utils'
+import {  useSelector } from 'react-redux'
 
 const DropZone = ({ pause }) => {
 
@@ -10,14 +9,7 @@ const DropZone = ({ pause }) => {
     const turn = useSelector(state => state.data.turn)
     const winner = useSelector(state => state.data.winner)
     const winArray = useSelector(state => state.data.winArray)
- 
-
     const [col, setCol] = useState(0)
-    const dispach = useDispatch()
-
-    useEffect(() => {
-        wins({ dropped, dispach, turn })
-    }, [turn])
 
     return (
         <div className='drap-zone'>
@@ -27,11 +19,12 @@ const DropZone = ({ pause }) => {
                 setCol={setCol}
                 dropped={dropped}
                 pause={pause}
+                winner={winner}
             />
 
             {dropped.map((element, index) => <div
                 key={index}
-                className={`coin p${element.player} droppedCoin-column-${element.y} droppedCoin-row-${element.x} `}
+                className={`droppedCoin p${element.player} droppedCoin-column-${element.y} droppedCoin-row-${element.x} `}
             >{winner !== 0 && winArray.find(e => e.x === element.x && e.y === element.y && e.player === element.player) ? <div className='winner'>x</div> : ''}</div>)}
         </div>
     )
