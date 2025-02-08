@@ -8,7 +8,7 @@ import Cursor from '../ui-elements/Cursor'
 import DropZone from './DropZone'
 import { useDispatch, useSelector } from 'react-redux'
 import { resetGame } from '../../utility/Utils'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import PauseModal from '../ui-elements/Modal'
 import { useParams } from 'react-router-dom'
 
@@ -18,6 +18,7 @@ function GamePage() {
     const scorePlayerOne = useSelector(state => state.data.scorePlayerOne)
     const [pause, setPause] = useState(false)
     const [openModal, setOpenModal] = useState(false);
+    const [isWin, settIsWin] = useState("")
 
     const dispach = useDispatch()
     const params = useParams()
@@ -43,7 +44,7 @@ function GamePage() {
             </section>
             <section className={style[`main-content`]}>
                 <div className={style[`pointer-row`]}>
-                    <DropZone pause={pause} />
+                    <DropZone pause={pause} isWin={isWin} settIsWin={settIsWin}/>
                 </div>
                 <div className={style.resultBoard}>
                     <div className={`${style.figure} ${style.playerTwo}`}>
@@ -70,8 +71,8 @@ function GamePage() {
                 </div>
             </section>
             <div className={`${style.footer} ${winner === 0 && style.mainFooter} ${winner === 2 && style.p2Footer} ${winner === 1 && style.p1Footer}`}></div>
-            <Cursor />
-            <PauseModal openModal={openModal} onCloseModal={onCloseModal} setPause={setPause} pause={pause} />
+            <Cursor  settIsWin={settIsWin} />
+            <PauseModal openModal={openModal} onCloseModal={onCloseModal} setPause={setPause} pause={pause}  />
 
         </div>
     )

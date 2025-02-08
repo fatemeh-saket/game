@@ -2,7 +2,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import '../../style/Cursor.css'
 import {playAgain} from '../../utility/Utils.jsx'
 
-const Cursor = () => {
+const Cursor = ({settIsWin}) => {
   const timer = useSelector(state => state.data.timer)
   const turn = useSelector(state => state.data.turn)
   const winner = useSelector(state => state.data.winner)
@@ -23,7 +23,11 @@ const Cursor = () => {
         <div className="winnerBord">
           <h6 className='playerWinner'>{winner===1?"بازیکن 1":" بازیکن 2"}</h6>
           <p> برنده شد </p>
-          <button onClick={()=>playAgain({scorePlayerOne,scorePlayerTwo,dispach})}> بازی مجدد </button>
+          <button onClick={()=>
+           { 
+            playAgain({scorePlayerOne,scorePlayerTwo,dispach});
+            settIsWin("")
+          }}> بازی مجدد </button>
         </div>
       }
     </>

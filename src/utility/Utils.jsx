@@ -21,10 +21,9 @@ export const playAgain = ({ scorePlayerOne, scorePlayerTwo, dispach }) => {
 }
 
 export const wins = ({ dropped, dispach, turn }) => {
-
     const p1Records = dropped.filter(element => element.player === 1)
     const p2Records = dropped.filter(element => element.player === 2)
-    let result = "reject"
+    let isWin = "reject"
     p1Records.forEach(({ x, y }) => {
 
         if (p1Records.find(m => m.x === x + 1 && m.y === y) &&
@@ -33,7 +32,8 @@ export const wins = ({ dropped, dispach, turn }) => {
             dispach(ChoosingTheWinner(1))
             dispach(givingPoints(turn == 1 ? 2 : 1))
             dispach(fillWinArray([{ x: x, y: y, player: 1 }, { x: x + 1, y: y, player: 1 }, { x: x + 2, y: y, player: 1 }, { x: x + 3, y: y, player: 1 }]))
-            result = "done"
+            dispach(changeTurn(0))
+            isWin = "done"
         }
 
         if (p1Records.find(m => m.x === x && m.y === y + 1) &&
@@ -42,7 +42,8 @@ export const wins = ({ dropped, dispach, turn }) => {
             dispach(ChoosingTheWinner(1))
             dispach(givingPoints(turn == 1 ? 2 : 1))
             dispach(fillWinArray([{ x: x, y: y, player: 1 }, { x: x, y: y + 1, player: 1 }, { x: x, y: y + 2, player: 1 }, { x: x, y: y + 3, player: 1 }]))
-            result = "done"
+            dispach(changeTurn(0))
+            isWin = "done"
         }
 
         if (p1Records.find(m => m.x === x - 1 && m.y === y + 1) &&
@@ -52,7 +53,9 @@ export const wins = ({ dropped, dispach, turn }) => {
             dispach(ChoosingTheWinner(1))
             dispach(givingPoints(turn == 1 ? 2 : 1))
             dispach(fillWinArray([{ x: x, y: y, player: 1 }, { x: x - 1, y: y + 1, player: 1 }, { x: x - 2, y: y + 2, player: 1 }, { x: x - 3, y: y + 3, player: 1 }]))
-            result = "done"
+            dispach(changeTurn(0))
+            isWin = "done"
+
         }
 
         if (p1Records.find(m => m.x === x + 1 && m.y === y + 1) &&
@@ -62,7 +65,9 @@ export const wins = ({ dropped, dispach, turn }) => {
             dispach(ChoosingTheWinner(1))
             dispach(givingPoints(turn == 1 ? 2 : 1))
             dispach(fillWinArray([{ x: x, y: y, player: 1 }, { x: x + 1, y: y + 1, player: 1 }, { x: x + 2, y: y + 2, player: 1 }, { x: x + 3, y: y + 3, player: 1 }]))
-            result = "done"
+            dispach(changeTurn(0))
+            isWin = "done"
+
         }
     });
 
@@ -75,7 +80,9 @@ export const wins = ({ dropped, dispach, turn }) => {
             dispach(ChoosingTheWinner(2))
             dispach(givingPoints(turn == 1 ? 2 : 1))
             dispach(fillWinArray([{ x: x, y: y, player: 2 }, { x: x + 1, y: y, player: 2 }, { x: x + 2, y: y, player: 2 }, { x: x + 3, y: y, player: 2 }]))
-            result = "done"
+            dispach(changeTurn(0))
+            isWin = "done"
+
         }
 
         if (p2Records.find(m => m.x === x && m.y === y + 1) &&
@@ -84,7 +91,9 @@ export const wins = ({ dropped, dispach, turn }) => {
             dispach(ChoosingTheWinner(2))
             dispach(givingPoints(turn == 1 ? 2 : 1))
             dispach(fillWinArray([{ x: x, y: y, player: 2 }, { x: x, y: y + 1, player: 2 }, { x: x, y: y + 2, player: 2 }, { x: x, y: y + 3, player: 2 }]))
-            result = "done"
+            dispach(changeTurn(0))
+            isWin = "done"
+
         }
 
         if (p2Records.find(m => m.x === x - 1 && m.y === y + 1) &&
@@ -94,7 +103,9 @@ export const wins = ({ dropped, dispach, turn }) => {
             dispach(ChoosingTheWinner(2))
             dispach(givingPoints(turn == 1 ? 2 : 1))
             dispach(fillWinArray([{ x: x, y: y, player: 2 }, { x: x - 1, y: y + 1, player: 2 }, { x: x - 2, y: y + 2, player: 2 }, { x: x - 3, y: y + 3, player: 2 }]))
-            result = "done"
+            dispach(changeTurn(0))
+            isWin = "done"
+
         }
 
         if (p2Records.find(m => m.x === x + 1 && m.y === y + 1) &&
@@ -104,11 +115,14 @@ export const wins = ({ dropped, dispach, turn }) => {
             dispach(ChoosingTheWinner(2))
             dispach(givingPoints(turn == 1 ? 2 : 1))
             dispach(fillWinArray([{ x: x, y: y, player: 2 }, { x: x + 1, y: y + 1, player: 2 }, { x: x + 2, y: y + 2, player: 2 }, { x: x + 3, y: y + 3, player: 2 }]))
-            result = "done"
+            dispach(changeTurn(0))
+            isWin = "done"
+
         }
 
     });
-    return result
+    return isWin
+
 }
 
 export const resetGame = (dispach) => {
@@ -120,26 +134,166 @@ export const resetGame = (dispach) => {
     dispach(changeTurn(1))
 }
 
-// const emptyCell = (dropped, col, row) => {
-//     const result = dropped.findIndex((element) => element.y === col && element.x === row)
-//     return result
-// }
+
+
+const checkForWin = (dropped, turn) => {
+    const player = dropped.filter(element => element.player === turn)
+    let column = -1
+
+    player.forEach(({ x, y }) => {
+        //  به صورت افقی سه تا کنار هم هستن
+        if (player.find(m => m.x + 1 === x && m.y === y) &&
+            player.find(m => m.x + 2 === x && m.y === y)
+            && dropped.findIndex(m => m.x + 3 === x && m.y === y) === -1
+        )
+            column = y
+
+        //  به صورت عمودی سه تا کنار هم هستن
+        if (player.find(m => m.x === x && m.y === y + 1) &&
+            player.find(m => m.x === x && m.y === y + 2)) {
+            // در سمت راستشان خانه ی خالی وجود داشته باشد که خانه ی زیر آن پر است
+            if (dropped.findIndex(m => m.x === x && m.y === y + 3) === -1
+                && (dropped.findIndex(m => m.x === x + 1 && m.y === y + 3) !== -1 || x == 5))
+                column = y + 3
+            // در سمت چپشان خانه ی خالی وجود داشته باشد که خانه ی زیر آن پر است
+            if (dropped.findIndex(m => m.x === x && m.y === y - 1) === -1
+                && (dropped.findIndex(m => m.x === x + 1 && m.y === y - 1) !== -1 || x == 5))
+                column = y - 1
+
+        }
+
+
+        // به صورت مورب رو به پایین سه خانه ی کنار هم پر است
+        if (player.find(m => m.x === x - 1 && m.y === y + 1) &&
+            player.find(m => m.x === x - 2 && m.y === y + 2)
+            && dropped.findIndex(m => m.x === x - 3 && m.y === y + 3) === -1
+            && dropped.findIndex(m => m.x === x - 2 && m.y === y + 3) !== -1
+        )
+            column = y + 3
+        if (player.find(m => m.x === x - 1 && m.y === y + 1)
+            && player.find(m => m.x === x - 3 && m.y === y + 3)
+            && dropped.findIndex(m => m.x === x - 2 && m.y === y + 2) === -1
+            && dropped.findIndex(m => m.x === x - 1 && m.y === y + 2) !== -1
+        )
+            column = y + 2
+        if (player.find(m => m.x === x - 2 && m.y === y + 2)
+            && player.find(m => m.x === x - 3 && m.y === y + 3)
+            && dropped.findIndex(m => m.x === x - 1 && m.y === y + 1) === -1
+            && dropped.findIndex(m => m.x === x && m.y === y + 1) !== -1
+        )
+            column = y + 1
+
+
+        // به صورت مورب رو به بالا سه خانه ی کنار هم پر است
+        if (player.find(m => m.x + 1 === x && m.y + 1 === y) &&
+            player.find(m => m.x + 2 === x && m.y + 2 === y) &&
+            dropped.findIndex(m => m.x + 3 === x && m.y + 3 === y) === -1
+            && dropped.findIndex(m => m.x + 2 === x && m.y + 3 === y) !== -1
+        ) {
+            column = y - 3
+        }
+        if (player.find(m => m.x + 1 === x && m.y + 1 === y) &&
+            player.find(m => m.x + 3 === x && m.y + 3 === y) &&
+            dropped.findIndex(m => m.x + 2 === x && m.y + 2 === y) === -1
+            && dropped.findIndex(m => m.x + 1 === x && m.y + 2 === y) !== -1
+        )
+            column = y - 2
+        if (player.find(m => m.x + 2 === x && m.y + 2 === y) &&
+            player.find(m => m.x + 3 === x && m.y + 3 === y) &&
+            dropped.findIndex(m => m.x + 1 === x && m.y + 1 === y) === -1
+            && dropped.findIndex(m => m.x === x && m.y + 1 === y) !== -1
+        )
+            column = y - 1
+
+
+
+
+    });
+
+    return column
+
+}
+
+const foundRow = (dropped) => {
+    const player = dropped.filter(element => element.player === 1)
+    let column = -1
+    player.forEach(({ x, y }) => {
+        // افقی میسازد
+        if (
+            player.find(m => m.x === x && m.y + 1 === y) &&
+            dropped.findIndex(m => m.x === x && m.y + 2 === y) === -1 &&
+            (dropped.findIndex(m => m.x === x && m.y - 1 === y) === -1 || dropped.findIndex(m => m.x === x && m.y + 3 === y) === -1)
+        )
+            column = y - 2
+
+        // عمودی میسازد
+        if (player.find(m => m.x === x + 1 && m.y === y) &&
+            (dropped.findIndex(m => m.x === x - 1 && m.y === y) === -1 && x >= 2)
+        )
+            column = y
+        if (x >= 3 && dropped.findIndex(m => m.x === x - 1 && m.y === y) === -1 &&
+            dropped.findIndex(m => m.x === x - 2 && m.y === y) === -1
+            && dropped.findIndex(m => m.x === x - 3 && m.y === y) === -1
+        )
+            column = y
+
+
+
+        // if (
+        //     player.find(m => m.x === x && m.y + 1 === y) &&
+        //     dropped.findIndex(m => m.x === x && m.y + 2 === y) === -1 &&
+        //     dropped.findIndex(m => m.x === x && m.y + 3 === y && m.player === 1) !== -1
+        // )
+        //     column = y - 2
+
+
+
+        // مورب میسازد
+        if (
+            player.find(m => m.x === x - 1 && m.y === y + 1) &&
+            dropped.findIndex(m => m.x === x - 2 && m.y === y + 2) === -1
+        )
+            column = y + 2
+
+        if (player.find(m => m.x === x - 2 && m.y - 2 === y)
+            && dropped.findIndex(m => m.x === x - 1 && m.y - 1 === y) === -1
+            && dropped.findIndex(m => m.x === x - 3 && m.y - 3 === y) === -1
+            && dropped.findIndex(m => m.x === x && m.y - 1 === y) === -1
+        )
+            column = y - 1
+
+
+
+
+
+
+
+    })
+    return column
+}
 
 const systemAlgorithm = ({ dropped }) => {
-    console.log("systemAlgorithm")
-    const player1 = dropped.filter(element => element.player === 1)
-    const player2 = dropped.filter(element => element.player === 2)
     let column
-    let left = 0
-    let Right = 0
+    let dangerColumn = checkForWin(dropped, 2)
+    let winColumn = checkForWin(dropped, 1)
 
-
-    // **************************  اولین حرکت را وسط برد میگذاریم
-    if (dropped[0]?.y !== 3) {
-        return column = 0
+    // ***  اولین حرکت را وسط برد میگذاریم
+    if (dropped.length === 0 || (dropped.length === 1 && dropped[0]?.y !== 3 && dropped[0]?.player === 2)) {
+        return column = 3
     }
+
+    // ***  بررسی برنده شدن با یک حرکت
+    if (winColumn !== -1) {
+        return column = winColumn
+    }
+
+    // ***  بررسی جلوگیری از برنده شدن طرف مقابل با یک حرکت
+    if (dangerColumn !== -1) {
+        return column = dangerColumn
+    }
+
     // **************************  بررسی قرار داشتن رنگ قرمز در وسط برد     
-    if (dropped[0]?.y === 3 && dropped[0]?.player === 1) {
+    if (dropped.findIndex(element => element.x === 5 && element.y === 3 && element.player === 1) !== -1) {
 
         //   به صورت ستونی پشت هم قرار گیرند قرمز ها
         if (dropped.findIndex(element => element.y === 3 && element.x === 4 && element.player == 2) == -1
@@ -148,18 +302,14 @@ const systemAlgorithm = ({ dropped }) => {
         )
             return column = 3
 
-        // بررسی میشود سطر پایین نیمه ی راست برد خالی یاشد
+        // بررسی میشود سطر پایین نیمه ی راست برد خالی باشد
         if (dropped.findIndex(element => element.y === 0 && element.x === 5 && element.player === 2) === -1
             && dropped.findIndex(element => element.y === 1 && element.x === 5 && element.player === 2) === -1
             && dropped.findIndex(element => element.y === 2 && element.x === 5 && element.player === 2) === -1) {
-            column = 2
-            if (dropped.findIndex(element => element.y === 1 && element.x === 5 && element.player === 2) === -1
-                && dropped.findIndex(element => element.y === 2 && element.x === 5 && element.player === 1) !== -1)
-                column = 1
 
-            if (dropped.findIndex(element => element.y === 1 && element.x === 5 && element.player === 1) !== -1
-                && dropped.findIndex(element => element.y === 2 && element.x === 5 && element.player === 1) !== -1)
-                column = 0
+            column = 2
+            if (dropped.findIndex(element => element.y === 2 && element.x === 5 && element.player === 1) !== -1)
+                column = 1
 
             return column
 
@@ -169,17 +319,80 @@ const systemAlgorithm = ({ dropped }) => {
         if (dropped.findIndex(element => element.y === 4 && element.x === 5 && element.player === 2) === -1
             && dropped.findIndex(element => element.y === 5 && element.x === 5 && element.player === 2) === -1
             && dropped.findIndex(element => element.y === 6 && element.x === 5 && element.player === 2) === -1) {
-            return column = 4
+            column = 4
+            if (dropped.findIndex(element => element.y === 4 && element.x === 5 && element.player === 1) !== -1)
+                column = 5
+
+
+            return column
 
         }
 
 
+        // قرار دادن سکه در سطر بعدی ستون کنار ستون وسط
+        if (dropped.findIndex(element => element.x === 5 && element.y == 4 ) !== -1
+            && dropped.findIndex(element => element.x === 4 && element.y == 4) === -1
+        )
+            return column = 4
+
+        if (dropped.findIndex(element => element.x === 5 && element.y == 2 ) !== -1
+            && dropped.findIndex(element => element.x === 4 && element.y == 2) === -1
+        )
+            return column = 2
 
 
+        //    بررسی مناسب بودن گزینه ی مناسب
+        if (foundRow(dropped) !== -1) {
+            return column = foundRow(dropped)
+        }
 
 
+    }
 
+    // **************************  بررسی قرار داشتن رنگ زرد در وسط برد     
+    if (dropped.findIndex(element => element.x === 5 && element.y === 3 && element.player === 2) !== -1) {
+        if (dropped.findIndex(m => m.y === 1 && m.x === 5) === -1)
+            return column = 1
+        if (dropped.findIndex(m => m.y === 5 && m.x === 5) === -1)
+            return column = 5
+        if (dropped.findIndex(m => m.y === 3 && m.x === 5) !== -1 &&
+            dropped.findIndex(m => m.y === 3 && m.x === 4) !== -1 &&
+            dropped.findIndex(m => m.y === 3 && m.x === 3) === -1
+        )
+            return column = 3
 
+        // قرار دادن سکه در سطر بعدی ستون کنار ستون وسط
+        if (dropped.findIndex(element => element.x === 5 && element.y == 1) !== -1
+            &&
+            dropped.findIndex(element => element.x === 4 && element.y == 1) === -1
+        )
+            return column = 1
+
+        if (dropped.findIndex(element => element.x === 5 && element.y == 5) !== -1
+            &&
+            dropped.findIndex(element => element.x === 4 && element.y == 5) === -1
+        )
+            return column = 5
+
+        if (dropped.findIndex(element => element.x === 5 && element.y == 5 && element.player === 1) !== -1
+            && dropped.findIndex(element => element.x === 4 && element.y == 5 && element.player === 1) !== -1
+            && dropped.findIndex(element => element.x === 2 && element.y == 3 && element.player === 1) !== -1
+            && dropped.findIndex(element => element.x === 5 && element.y == 6) === -1
+        )
+            return column = 6
+
+        if (dropped.findIndex(element => element.x === 5 && element.y == 1 && element.player === 1) !== -1
+            && dropped.findIndex(element => element.x === 4 && element.y == 1 && element.player === 1) !== -1
+            && dropped.findIndex(element => element.x === 2 && element.y == 3 && element.player === 1) !== -1
+            && dropped.findIndex(element => element.x === 5 && element.y == 0) === -1
+        )
+            return column = 0
+
+        //    بررسی مناسب بودن گزینه ی مناسب
+        if (foundRow(dropped) !== -1) {
+            return column = foundRow(dropped)
+        }
+        // if ()
 
 
 
@@ -194,86 +407,17 @@ const systemAlgorithm = ({ dropped }) => {
 }
 
 
-export const systemMove = async ({ turn, dispach, setCol, row, setPauseTime, setDelay, setPointRow, dropped, col }) => {
+export const systemMove = async ({ turn, dispach, setCol, row, setPauseTime, setDelay, setPointRow, dropped }) => {
+
     const delay = (milliseconds) => new Promise(resolve => setTimeout(resolve, milliseconds));
-    let column = systemAlgorithm({ dropped })
-
-
-
-    // // ***************اولین حرکت وسط برد باشد
-    // if (dropped[0]?.y !== 3) {
-    //     column = 3
-    // }
-
-    // ***************  اگر اولین حرکتش وسط برد باشد حرکت بعدی روی ان قرار گیرد   
-    // if (dropped[0]?.y === 3 && dropped[0]?.player === 1 && dropped.findIndex(element => element.y === 3 && element.x === 4) == -1) {
-    //     column = 3
-    // }
-
-    // ***************  اگر وسط مرکز دو تا ستون قرمز باشد و سومی زرد نباشد ان ستون سوم را زرد میکنیم   
-
-    // if (dropped[0]?.y === 3
-    //     && dropped[0]?.player === 1
-    //     && dropped.findIndex(element => element.y === 3 && element.x === 4 && element.player === 1) !== -1
-    //     && dropped.findIndex(element => element.y === 3 && element.x === 3 && element.player === 2) == -1) {
-    //     column = 3
-    // }
-
-
-    // if (dropped[0]?.y === 3
-    //     && dropped.findIndex(element => element.y === 0 && element.x === 5 && element.player === 2) === -1
-    //     && dropped.findIndex(element => element.y === 1 && element.x === 5 && element.player === 2) === -1
-    //     && dropped.findIndex(element => element.y === 2 && element.x === 5 && element.player === 2) === -1
-    // ) {
-    //     column = 2
-    // }
-    // if (dropped[0]?.y === 3
-    //     && dropped.findIndex(element => element.y === 0 && element.x === 5 && element.player === 2) === -1
-    //     && dropped.findIndex(element => element.y === 1 && element.x === 5 && element.player === 2) === -1
-    //     && dropped.findIndex(element => element.y === 2 && element.x === 5 && element.player === 1) !== -1
-    // ) {
-    //     column = 1
-    // }
-    // if (dropped[0]?.y === 3
-    //     && dropped.findIndex(element => element.y === 0 && element.x === 5 && element.player === 2) === -1
-    //     && dropped.findIndex(element => element.y === 1 && element.x === 5 && element.player === 1) !== -1
-    //     && dropped.findIndex(element => element.y === 2 && element.x === 5 && element.player === 2) === -1
-    // ) {
-    //     column = 0
-    // }
-
-    // if (dropped[0]?.y === 3 && dropped[0]?.player === 1 && dropped.findIndex(element => element.y === 3 && element.x === 4 ) == -1) {
-    //     column = 3
-    // }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    let column = systemAlgorithm({ dropped, row })
 
     setTimeout(() => {
         setCol(column)
     }, 500)
     await delay(1000);
     setTimeout(() => {
-        if (5 - row[col] >= 0) {
+        if (5 - row[column] >= 0) {
             dispach(changeTurn(turn == 1 ? 2 : 1))
             dispach(changeDropped([column, turn]))
 
@@ -281,6 +425,7 @@ export const systemMove = async ({ turn, dispach, setCol, row, setPauseTime, set
             dispach(resetTimer())
             setPauseTime(0)
             setDelay(0)
+
         }
     }, 500)
     dispach(changeRow(column))

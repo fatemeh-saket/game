@@ -11,9 +11,13 @@ export const gameStore = createSlice({
         winArray:[],
         timer: 0,
         scorePlayerOne: 0,
-        scorePlayerTwo: 0
+        scorePlayerTwo: 0,
+        mode:""
     },
     reducers: {
+        changeMode: (state, action) => {
+            state.mode = action.payload
+        },
         changeTurn: (state, action) => {
             state.turn = action.payload
         },
@@ -24,7 +28,6 @@ export const gameStore = createSlice({
             state.row.splice(action.payload, 1, state.row[action.payload] + 1)
         },
         changeDropped: (state, action) => {
-            console.log("changeDropped", action)
             state.dropped = [...state.dropped, { x: 6 - state.row[action.payload[0]], y: action.payload[0], player: action.payload[1] }]
         },
         ChoosingTheWinner: (state, action) => {
@@ -60,5 +63,5 @@ export const gameStore = createSlice({
     }
 
 })
-export const { changeTurn, changeRow, changeDropped, setTimer, resetTimer, ChoosingTheWinner, givingPoints, emptyBoard,fillWinArray, resetscore,changeRound } = gameStore.actions
+export const { changeTurn, changeRow, changeDropped, setTimer, resetTimer, ChoosingTheWinner, givingPoints, emptyBoard,fillWinArray, resetscore,changeRound, changeMode } = gameStore.actions
 export default gameStore.reducer

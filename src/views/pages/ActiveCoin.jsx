@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
 import '../../style/DropZone.css'
 import { useDispatch, useSelector } from 'react-redux'
-import { changeTurn, emptyBoard, changeRow, changeDropped, setTimer, resetTimer, ChoosingTheWinner, givingPoints } from '../../store/gameStore'
+import { changeTurn, changeRow, changeDropped, setTimer, resetTimer, ChoosingTheWinner, givingPoints } from '../../store/gameStore'
 import { useParams } from 'react-router-dom'
 import { systemMove, wins } from '../../utility/Utils'
-const ActiveCoin = ({ turn, col, setCol, pause, winner, dropped }) => {
+
+const ActiveCoin = ({ turn, col, setCol, pause, winner, dropped , isWin, settIsWin}) => {
 
     const dispach = useDispatch()
     const params = useParams()
@@ -16,6 +17,7 @@ const ActiveCoin = ({ turn, col, setCol, pause, winner, dropped }) => {
 
     const row = useSelector(state => state.data.row)
     const round = useSelector(state => state.data.round)
+    const mode = useSelector(state => state.data.mode)
 
     const handleKeys = (e) => {
         if (winner === 0) {
@@ -27,11 +29,11 @@ const ActiveCoin = ({ turn, col, setCol, pause, winner, dropped }) => {
                 setCol(col - 1)
 
             else if (e.keyCode === 32 || e.keyCode === 13 || e.keyCode === 40)  /* enter or  space or play*/ {
-        
+
                 setTimeout(() => {
                     if (5 - row[col] >= 0) {
-                        dispach(changeTurn(turn == 1 ? 2 : 1))
                         dispach(changeDropped([col, turn]))
+                        dispach(changeTurn(turn == 1 ? 2 : 1))
 
                         // ***** timer
                         dispach(resetTimer())
@@ -48,28 +50,30 @@ const ActiveCoin = ({ turn, col, setCol, pause, winner, dropped }) => {
     }
 
     useEffect(() => {
-        if (params.players === "twoPlayers" || (params.players === "systemPlay" && turn === 2)) {
+        if (params.players === "twoPlayers" || (params.players === "systemPlay" && turn === 2 && isWin!=="done")) {
             document.addEventListener('keyup', handleKeys, false)
             return () => document.removeEventListener('keyup', handleKeys)
         }
-
     })
 
     useEffect(() => {
-        if (params.players === "systemPlay" && turn === 1) {
+       let winResult
+        if (params.players == "systemPlay" && turn === 1 && mode === "dynamic" && isWin!=="done") {
             systemMove({ turn, setCol, dispach, row, setPauseTime, setDelay, setPointRow, dropped, col })
         }
-
         // check for wins
-        let isWine = wins({ dropped, dispach, turn })
-        
+        if (turn !== 0 && isWin!=="done") {
+            winResult = wins({ dropped, dispach, turn })
+            settIsWin(winResult)
+        }
         setPointRow()
         setCol(0)
         let counter = 0
+
         if (!pause) {
             intervalId = setInterval(() => {
                 dispach(setTimer())
-                if (counter === 10 - delay && isWine === "reject") {
+                if (counter === 30 - delay && turn !== 0 && isWin!=="done") {
                     counter = 0
                     setPauseTime(0)
                     setDelay(0)
