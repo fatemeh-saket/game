@@ -149,6 +149,16 @@ img {
     .playerTwo {
         right: calc(calc(var(--width-face) * -1) / 2)
     }
+    .header .button {
+        font-size: 0.5rem;
+    }
+    .resultBoard address {
+        font-size: 0.6rem;
+    }
+    .resultBoard span {
+        font-size: 1rem;
+    }
+    
 }
 
 @media (max-width:1024px) {}

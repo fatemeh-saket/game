@@ -117,7 +117,6 @@ export const wins = ({ dropped, dispach, turn }) => {
             dispach(fillWinArray([{ x: x, y: y, player: 2 }, { x: x + 1, y: y + 1, player: 2 }, { x: x + 2, y: y + 2, player: 2 }, { x: x + 3, y: y + 3, player: 2 }]))
             dispach(changeTurn(0))
             isWin = "done"
-
         }
 
     });
@@ -141,24 +140,32 @@ const checkForWin = (dropped, turn) => {
     let column = -1
 
     player.forEach(({ x, y }) => {
-        //  به صورت افقی سه تا کنار هم هستن
+        //  به صورت عمودی سه تا کنار هم هستن
         if (player.find(m => m.x + 1 === x && m.y === y) &&
             player.find(m => m.x + 2 === x && m.y === y)
             && dropped.findIndex(m => m.x + 3 === x && m.y === y) === -1
-        )
-            column = y
+        ) {
+            console.log(" برنده عمودی ", y)
 
-        //  به صورت عمودی سه تا کنار هم هستن
+            column = y
+        }
+
+        //  به صورت افقی سه تا کنار هم هستن
         if (player.find(m => m.x === x && m.y === y + 1) &&
             player.find(m => m.x === x && m.y === y + 2)) {
             // در سمت راستشان خانه ی خالی وجود داشته باشد که خانه ی زیر آن پر است
             if (dropped.findIndex(m => m.x === x && m.y === y + 3) === -1
-                && (dropped.findIndex(m => m.x === x + 1 && m.y === y + 3) !== -1 || x == 5))
+                && y <= 3
+                && (dropped.findIndex(m => m.x === x + 1 && m.y === y + 3) !== -1 || x == 5)) {
+                console.log(" برنده افقی ", y + 3)
                 column = y + 3
+            }
             // در سمت چپشان خانه ی خالی وجود داشته باشد که خانه ی زیر آن پر است
             if (dropped.findIndex(m => m.x === x && m.y === y - 1) === -1
-                && (dropped.findIndex(m => m.x === x + 1 && m.y === y - 1) !== -1 || x == 5))
+                && (dropped.findIndex(m => m.x === x + 1 && m.y === y - 1) !== -1 || x == 5)) {
+                console.log(" برنده افقی  ", y - 1)
                 column = y - 1
+            }
 
         }
 
@@ -168,20 +175,29 @@ const checkForWin = (dropped, turn) => {
             player.find(m => m.x === x - 2 && m.y === y + 2)
             && dropped.findIndex(m => m.x === x - 3 && m.y === y + 3) === -1
             && dropped.findIndex(m => m.x === x - 2 && m.y === y + 3) !== -1
-        )
+            && y <= 3
+        ) {
+            console.log(" برنده مورب پایین", y + 3)
             column = y + 3
+        }
         if (player.find(m => m.x === x - 1 && m.y === y + 1)
             && player.find(m => m.x === x - 3 && m.y === y + 3)
             && dropped.findIndex(m => m.x === x - 2 && m.y === y + 2) === -1
             && dropped.findIndex(m => m.x === x - 1 && m.y === y + 2) !== -1
-        )
+            && y <= 4
+        ) {
+            console.log(" برنده مورب پایین", y + 2)
             column = y + 2
+        }
         if (player.find(m => m.x === x - 2 && m.y === y + 2)
             && player.find(m => m.x === x - 3 && m.y === y + 3)
             && dropped.findIndex(m => m.x === x - 1 && m.y === y + 1) === -1
             && dropped.findIndex(m => m.x === x && m.y === y + 1) !== -1
-        )
+            && y <= 5
+        ) {
+            console.log(" برنده مورب پایین", y + 1)
             column = y + 1
+        }
 
 
         // به صورت مورب رو به بالا سه خانه ی کنار هم پر است
@@ -190,20 +206,25 @@ const checkForWin = (dropped, turn) => {
             dropped.findIndex(m => m.x + 3 === x && m.y + 3 === y) === -1
             && dropped.findIndex(m => m.x + 2 === x && m.y + 3 === y) !== -1
         ) {
+            console.log(" برنده مورب بالا", y - 3)
             column = y - 3
         }
         if (player.find(m => m.x + 1 === x && m.y + 1 === y) &&
             player.find(m => m.x + 3 === x && m.y + 3 === y) &&
             dropped.findIndex(m => m.x + 2 === x && m.y + 2 === y) === -1
             && dropped.findIndex(m => m.x + 1 === x && m.y + 2 === y) !== -1
-        )
+        ) {
+            console.log(" برنده مورب بالا", y - 2)
             column = y - 2
+        }
         if (player.find(m => m.x + 2 === x && m.y + 2 === y) &&
             player.find(m => m.x + 3 === x && m.y + 3 === y) &&
             dropped.findIndex(m => m.x + 1 === x && m.y + 1 === y) === -1
             && dropped.findIndex(m => m.x === x && m.y + 1 === y) !== -1
-        )
+        ) {
+            console.log(" برنده مورب بالا", y - 1)
             column = y - 1
+        }
 
 
 
@@ -217,60 +238,59 @@ const checkForWin = (dropped, turn) => {
 const foundRow = (dropped) => {
     const player = dropped.filter(element => element.player === 1)
     let column = -1
+
     player.forEach(({ x, y }) => {
-        // افقی میسازد
+
+        // *******************افقی میسازد
         if (
             player.find(m => m.x === x && m.y + 1 === y) &&
             dropped.findIndex(m => m.x === x && m.y + 2 === y) === -1 &&
-            (dropped.findIndex(m => m.x === x && m.y - 1 === y) === -1 || dropped.findIndex(m => m.x === x && m.y + 3 === y) === -1)
-        )
+            ((dropped.findIndex(m => m.x === x && m.y - 1 === y) === -1 && y >= 1) || (dropped.findIndex(m => m.x === x && m.y + 3 === y) === -1 && y <= 3))
+        ) {
+            console.log("افقی", y - 2)
             column = y - 2
+        }
 
-        // عمودی میسازد
-        if (player.find(m => m.x === x + 1 && m.y === y) &&
-            (dropped.findIndex(m => m.x === x - 1 && m.y === y) === -1 && x >= 2)
-        )
-            column = y
-        if (x >= 3 && dropped.findIndex(m => m.x === x - 1 && m.y === y) === -1 &&
-            dropped.findIndex(m => m.x === x - 2 && m.y === y) === -1
-            && dropped.findIndex(m => m.x === x - 3 && m.y === y) === -1
-        )
-            column = y
-
-
-
-        // if (
-        //     player.find(m => m.x === x && m.y + 1 === y) &&
-        //     dropped.findIndex(m => m.x === x && m.y + 2 === y) === -1 &&
-        //     dropped.findIndex(m => m.x === x && m.y + 3 === y && m.player === 1) !== -1
-        // )
-        //     column = y - 2
-
-
-
-        // مورب میسازد
+        //   *******************مورب میسازد
         if (
             player.find(m => m.x === x - 1 && m.y === y + 1) &&
             dropped.findIndex(m => m.x === x - 2 && m.y === y + 2) === -1
-        )
+            && y < 5
+        ) {
+            console.log("مورب یک", y + 2)
             column = y + 2
+        }
 
         if (player.find(m => m.x === x - 2 && m.y - 2 === y)
             && dropped.findIndex(m => m.x === x - 1 && m.y - 1 === y) === -1
             && dropped.findIndex(m => m.x === x - 3 && m.y - 3 === y) === -1
             && dropped.findIndex(m => m.x === x && m.y - 1 === y) === -1
-        )
-            column = y - 1
+        ) {
+            console.log("مورب دو", y + 1)
+            column = y + 1
+        }
 
+        // *******************عمودی میسازد
 
-
-
-
+        // .دوتا خونه رنگ قرمز هست و حداقل دو تا بالای ان جا دارد
+        if (player.find(m => m.x === x + 1 && m.y === y) &&
+            (dropped.findIndex(m => m.x === x - 1 && m.y === y) === -1 && x >= 2)
+        ) {
+            console.log("عمودی یک", y)
+            column = y
+        }
+        // حداقل سه تا خانه ی بالای ان خالی است
+        if (x >= 3 && dropped.findIndex(m => m.x === x - 1 && m.y === y) === -1
+        ) {
+            console.log("عمودی دو", y)
+            column = y
+        }
 
 
     })
     return column
 }
+
 
 const systemAlgorithm = ({ dropped }) => {
     let column
@@ -284,7 +304,7 @@ const systemAlgorithm = ({ dropped }) => {
 
     // ***  بررسی برنده شدن با یک حرکت
     if (winColumn !== -1) {
-        return column = winColumn
+        // return column = winColumn
     }
 
     // ***  بررسی جلوگیری از برنده شدن طرف مقابل با یک حرکت
@@ -330,12 +350,12 @@ const systemAlgorithm = ({ dropped }) => {
 
 
         // قرار دادن سکه در سطر بعدی ستون کنار ستون وسط
-        if (dropped.findIndex(element => element.x === 5 && element.y == 4 ) !== -1
+        if (dropped.findIndex(element => element.x === 5 && element.y == 4) !== -1
             && dropped.findIndex(element => element.x === 4 && element.y == 4) === -1
         )
             return column = 4
 
-        if (dropped.findIndex(element => element.x === 5 && element.y == 2 ) !== -1
+        if (dropped.findIndex(element => element.x === 5 && element.y == 2) !== -1
             && dropped.findIndex(element => element.x === 4 && element.y == 2) === -1
         )
             return column = 2
@@ -351,29 +371,38 @@ const systemAlgorithm = ({ dropped }) => {
 
     // **************************  بررسی قرار داشتن رنگ زرد در وسط برد     
     if (dropped.findIndex(element => element.x === 5 && element.y === 3 && element.player === 2) !== -1) {
+
+        // وسط نیمه ی سمت راست قرار میگیرد
         if (dropped.findIndex(m => m.y === 1 && m.x === 5) === -1)
             return column = 1
+
+        // وسط نیمه ی سمت چپ قرار میگیرد
         if (dropped.findIndex(m => m.y === 5 && m.x === 5) === -1)
             return column = 5
+
+        // بررسی میکند اگر دوتاخانه ی پایین وسط برد پر شده و سومی خالی است. ان را پر میکند
         if (dropped.findIndex(m => m.y === 3 && m.x === 5) !== -1 &&
             dropped.findIndex(m => m.y === 3 && m.x === 4) !== -1 &&
             dropped.findIndex(m => m.y === 3 && m.x === 3) === -1
         )
             return column = 3
 
-        // قرار دادن سکه در سطر بعدی ستون کنار ستون وسط
+        // قرار دادن در سطر بالای وسط نیمه ی راست
         if (dropped.findIndex(element => element.x === 5 && element.y == 1) !== -1
             &&
             dropped.findIndex(element => element.x === 4 && element.y == 1) === -1
         )
             return column = 1
 
+        // قرار دادن در سطر بالای وسط نیمه ی چپ
         if (dropped.findIndex(element => element.x === 5 && element.y == 5) !== -1
             &&
             dropped.findIndex(element => element.x === 4 && element.y == 5) === -1
         )
             return column = 5
 
+
+        // ابتدای برد قرار گیرد برای مورب شدن
         if (dropped.findIndex(element => element.x === 5 && element.y == 5 && element.player === 1) !== -1
             && dropped.findIndex(element => element.x === 4 && element.y == 5 && element.player === 1) !== -1
             && dropped.findIndex(element => element.x === 2 && element.y == 3 && element.player === 1) !== -1
@@ -381,6 +410,7 @@ const systemAlgorithm = ({ dropped }) => {
         )
             return column = 6
 
+        // انتهای برد قرار گیرد برای مورب شدن
         if (dropped.findIndex(element => element.x === 5 && element.y == 1 && element.player === 1) !== -1
             && dropped.findIndex(element => element.x === 4 && element.y == 1 && element.player === 1) !== -1
             && dropped.findIndex(element => element.x === 2 && element.y == 3 && element.player === 1) !== -1
@@ -388,12 +418,11 @@ const systemAlgorithm = ({ dropped }) => {
         )
             return column = 0
 
+
         //    بررسی مناسب بودن گزینه ی مناسب
         if (foundRow(dropped) !== -1) {
             return column = foundRow(dropped)
         }
-        // if ()
-
 
 
     }
@@ -411,7 +440,7 @@ export const systemMove = async ({ turn, dispach, setCol, row, setPauseTime, set
 
     const delay = (milliseconds) => new Promise(resolve => setTimeout(resolve, milliseconds));
     let column = systemAlgorithm({ dropped, row })
-
+    console.log("column", column)
     setTimeout(() => {
         setCol(column)
     }, 500)

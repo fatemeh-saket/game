@@ -4,12 +4,12 @@ import '../../style/modal.css'
 import { resetGame } from '../../utility/Utils'
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import {changeMode} from '../../store/gameStore'
+import { changeMode } from '../../store/gameStore'
 
-const PauseModal = ({ openModal, onCloseModal, setPause, pause}) => {
-  const dispach= useDispatch()
-  const navigate= useNavigate()
-  
+const PauseModal = ({ openModal, onCloseModal, setPause, pause }) => {
+  const dispach = useDispatch()
+  const navigate = useNavigate()
+
   return (
     <>
       <Modal open={openModal} center
@@ -32,13 +32,13 @@ const PauseModal = ({ openModal, onCloseModal, setPause, pause}) => {
             }}>
               شروع مجدد
             </button> */}
-            <button className='exitButton' 
-             onClick={()=>{
-              resetGame(dispach)
-              onCloseModal()
-              navigate('/')
-              dispach(changeMode(""))
-             }}
+            <button className='exitButton'
+              onClick={() => {
+                resetGame(dispach)
+                onCloseModal()
+                navigate('/')
+                dispach(changeMode(""))
+              }}
             >
               خروج از بازی
             </button>

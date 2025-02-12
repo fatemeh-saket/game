@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import '../../style/DropZone.css'
 import ActiveCoin from './ActiveCoin'
 import { useDispatch, useSelector } from 'react-redux'
-import { wins } from '../../utility/Utils'
 
 const DropZone = ({ pause, isWin, settIsWin }) => {
 
@@ -10,13 +9,8 @@ const DropZone = ({ pause, isWin, settIsWin }) => {
     const turn = useSelector(state => state.data.turn)
     const winner = useSelector(state => state.data.winner)
     const winArray = useSelector(state => state.data.winArray)
-    const dispach = useDispatch()
     const [col, setCol] = useState(0)
-    let theEnd
-    // useEffect(() => {
-    //     if (turn !== 0)
-    //         wins({ dropped, dispach, turn })
-    // }, [turn])
+ 
     return (
         <div className='drap-zone'>
             <ActiveCoin
